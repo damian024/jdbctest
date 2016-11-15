@@ -1,6 +1,6 @@
 package com.example.jdbcdemo.domain;
 
-public class MainSponsor {
+public class Sponsor {
 	
 	private int id;
 	private String name;

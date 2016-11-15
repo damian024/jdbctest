@@ -5,9 +5,8 @@ import java.sql.Date;
 public class Event {
 	private int id;
 	private String name;
-	private Date time;
-	private String about;
-	
+	private Date date;
+	private int mainSponsor;
 	public int getId() {
 		return id;
 	}
@@ -20,18 +19,19 @@ public class Event {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getTime() {
-		return time;
+	public Date getDate() {
+		return date;
 	}
-	public void setTime(Date time) {
-		this.time = time;
+	public void setDate(Date date) {
+		this.date = date;
 	}
-	public String getAbout() {
-		return about;
+	public int getMainSponsor() {
+		return mainSponsor;
 	}
-	public void setAbout(String about) {
-		this.about = about;
+	public void setMainSponsor(int mainSponsor) {
+		this.mainSponsor = mainSponsor;
 	}
+	
 
 
 }
