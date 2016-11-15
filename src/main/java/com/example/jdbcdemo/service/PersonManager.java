@@ -27,7 +27,9 @@ public class PersonManager {
 
 	public PersonManager() {
 		try {
-			connection = DriverManager.getConnection(url);
+			connection = DriverManager.getConnection(
+			          "jdbc:hsqldb:file:/tmp/testdb;ifexists=false", "SA", "");
+					//DriverManager.getConnection(url);
 			statement = connection.createStatement();
 
 			ResultSet rs = connection.getMetaData().getTables(null, null, null,

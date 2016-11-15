@@ -36,5 +36,11 @@ public class PersonManagerTest {
 		assertEquals(YOB_1, personRetrieved.getYob());
 		
 	}
+	@Test
+	public void checkJanusz(){
+		
+		assertEquals(1,2);
+		
+	}
 
 }
