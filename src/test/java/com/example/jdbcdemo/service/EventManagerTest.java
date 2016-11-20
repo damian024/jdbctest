@@ -2,6 +2,7 @@ package com.example.jdbcdemo.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -145,6 +146,7 @@ public class EventManagerTest {
 		{
 			Sponsor sponsor = new Sponsor(NAME_SPONSOR_1,SPONSOR_ABOUT_1);
 			sponsorManager.addSponsor(sponsor);
+			sponsorManager.addSponsor(sponsor);
 			List<Sponsor> sponsors = sponsorManager.getAllSponsors();
 			sponsor = sponsors.get(sponsors.size()-1);
 			
@@ -158,6 +160,13 @@ public class EventManagerTest {
 			Event eventRetrieved = events.get(size -1);
 			
 			assertEquals(1,eventManager.DeleteSponsorFromEvent(eventRetrieved));
+			
+			List<Event> events2 = eventManager.getAllEvents();
+			Event eventRetrieved2  = events2.get(events2.size() - 1);
+			
+			assertEquals(0,eventRetrieved2.getMainSponsor());
+			
+			
 			
 		} finally {
 		    connection.rollback();
@@ -190,6 +199,13 @@ public class EventManagerTest {
 			Event eventRetrieved = events.get(size -1);
 			
 			assertEquals(1,eventManager.AddSponsor(eventRetrieved, sponsor));
+			
+			List<Event> events2 = eventManager.getAllEvents();
+			int size2 = events2.size();
+			Event eventRetrieved2 = events2.get(size2-1);
+			
+			assertEquals(sponsor.getId(),eventRetrieved2.getMainSponsor());
+			
 			
 		} finally {
 		    connection.rollback();
