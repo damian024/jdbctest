@@ -1,12 +1,25 @@
 package com.example.jdbcdemo.domain;
 
-import java.sql.Date;
-
 public class Event {
 	private int id;
 	private String name;
-	private Date date;
+	private String about;
 	private int mainSponsor;
+	
+	public Event(String name, String about, int mainSponsor)
+	{
+		this.name = name;
+		this.about = about;
+		this.mainSponsor = mainSponsor;
+	}
+	public Event(String name, String about)
+	{
+		this.name = name;
+		this.about = about;
+	}
+	public Event(){
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -19,17 +32,17 @@ public class Event {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
 	public int getMainSponsor() {
 		return mainSponsor;
 	}
-	public void setMainSponsor(int mainSponsor) {
-		this.mainSponsor = mainSponsor;
+	public void setMainSponsor(int sponsor) {
+		this.mainSponsor = sponsor;
+	}
+	public String getAbout() {
+		return about;
+	}
+	public void setAbout(String about) {
+		this.about = about;
 	}
 	
 

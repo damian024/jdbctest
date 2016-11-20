@@ -6,6 +6,13 @@ public class Sponsor {
 	private String name;
 	private String about;
 	
+	public Sponsor(String name, String about)
+	{
+		this.name = name;
+		this.about = about;
+	}
+	public Sponsor(){
+	}
 	
 	public String getName() {
 		return name;

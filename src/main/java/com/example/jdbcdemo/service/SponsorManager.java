@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.jdbcdemo.domain.Person;
 import com.example.jdbcdemo.domain.Sponsor;
 
 public class SponsorManager {
@@ -65,10 +64,11 @@ public class SponsorManager {
 		return connection;
 	}
 
-	int DeleteSponsors(Sponsor sponsor) {
+	int DeleteSponsor(Sponsor sponsor) {
 		int count = 0;
 		try {
 			addSponsorStmt.setInt(1, sponsor.getId());
+			System.out.println(sponsor.getId());
 			count  = deleteSponsorStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
