@@ -2,7 +2,6 @@ package com.example.jdbcdemo.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,6 +11,8 @@ import org.junit.Test;
 
 import com.example.jdbcdemo.domain.Event;
 import com.example.jdbcdemo.domain.Sponsor;
+
+import junit.framework.Assert;
 
 public class EventManagerTest {
 	SponsorManager sponsorManager = new SponsorManager();
@@ -205,6 +206,48 @@ public class EventManagerTest {
 			Event eventRetrieved2 = events2.get(size2-1);
 			
 			assertEquals(sponsor.getId(),eventRetrieved2.getMainSponsor());
+			
+			
+		} finally {
+		    connection.rollback();
+		    connection.close();
+		    connSponsor.rollback();
+		    connSponsor.close();
+		}
+	}
+	@Test
+	public void checkGettingEventsWithSponsor() throws SQLException
+	{
+		Connection connection = eventManager.getConnection();
+		connection.setAutoCommit(false);
+		Connection connSponsor = sponsorManager.getConnection();
+		connSponsor.setAutoCommit(false);
+		try
+		{
+			Sponsor sponsor = new Sponsor(NAME_SPONSOR_1,SPONSOR_ABOUT_1);
+			sponsorManager.addSponsor(sponsor);
+			List<Sponsor> sponsors = sponsorManager.getAllSponsors();
+			sponsor = sponsors.get(sponsors.size()-1);
+			
+			Event event = new Event(NAME_1,ABOUT_1,sponsor.getId());
+			assertEquals(1,eventManager.addEvent(event));
+			
+			sponsor = new Sponsor(NAME_SPONSOR_1,SPONSOR_ABOUT_1);
+			sponsorManager.addSponsor(sponsor);
+			sponsors = sponsorManager.getAllSponsors();
+			sponsor = sponsors.get(sponsors.size()-1);
+			
+			event = new Event(NAME_2,ABOUT_1,sponsor.getId());
+			assertEquals(1,eventManager.addEvent(event));
+			
+			List<Event> events = eventManager.getAllEvents();
+			for (Event ev : events)
+			{
+				if(ev.getMainSponsor() != sponsor.getId())
+					events.remove(ev);
+			}
+			
+			Assert.assertEquals(events.size(),eventManager.getAllEventsWithSelectedSponsor(sponsor).size());			
 			
 			
 		} finally {
