@@ -134,5 +134,68 @@ public class EventManagerTest {
 		    connSponsor.rollback();
 		    connSponsor.close();
 		}
-	}  
+	}
+	@Test
+	public void checkDeletingSponsor() throws SQLException{
+		Connection connection = eventManager.getConnection();
+		connection.setAutoCommit(false);
+		Connection connSponsor = sponsorManager.getConnection();
+		connSponsor.setAutoCommit(false);
+		try
+		{
+			Sponsor sponsor = new Sponsor(NAME_SPONSOR_1,SPONSOR_ABOUT_1);
+			sponsorManager.addSponsor(sponsor);
+			List<Sponsor> sponsors = sponsorManager.getAllSponsors();
+			sponsor = sponsors.get(sponsors.size()-1);
+			
+			Event event = new Event(NAME_1,ABOUT_1,sponsor.getId());
+			
+			assertEquals(1,eventManager.addEvent(event));
+			
+			List<Event> events = eventManager.getAllEvents();
+			
+			int size = events.size();
+			Event eventRetrieved = events.get(size -1);
+			
+			assertEquals(1,eventManager.DeleteSponsorFromEvent(eventRetrieved));
+			
+		} finally {
+		    connection.rollback();
+		    connection.close();
+		    connSponsor.rollback();
+		    connSponsor.close();
+		}
+	}
+	
+	@Test
+	public void AddSponsor() throws SQLException{
+		Connection connection = eventManager.getConnection();
+		connection.setAutoCommit(false);
+		Connection connSponsor = sponsorManager.getConnection();
+		connSponsor.setAutoCommit(false);
+		try
+		{
+			Sponsor sponsor = new Sponsor(NAME_SPONSOR_1,SPONSOR_ABOUT_1);
+			sponsorManager.addSponsor(sponsor);
+			List<Sponsor> sponsors = sponsorManager.getAllSponsors();
+			sponsor = sponsors.get(sponsors.size()-1);
+			
+			Event event = new Event(NAME_1,ABOUT_1);
+			
+			assertEquals(1,eventManager.addEvent(event));
+			
+			List<Event> events = eventManager.getAllEvents();
+			
+			int size = events.size();
+			Event eventRetrieved = events.get(size -1);
+			
+			assertEquals(1,eventManager.AddSponsor(eventRetrieved, sponsor));
+			
+		} finally {
+		    connection.rollback();
+		    connection.close();
+		    connSponsor.rollback();
+		    connSponsor.close();
+		}
+	}
 }
