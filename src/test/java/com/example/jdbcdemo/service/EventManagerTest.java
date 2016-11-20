@@ -241,13 +241,18 @@ public class EventManagerTest {
 			assertEquals(1,eventManager.addEvent(event));
 			
 			List<Event> events = eventManager.getAllEvents();
+			List<Event> selected = eventManager.getAllEventsWithSelectedSponsor(sponsor);
+			
+			int test = 0;
 			for (Event ev : events)
 			{
 				if(ev.getMainSponsor() != sponsor.getId())
 					events.remove(ev);
+				else
+					assertEquals(events.get(test++),ev);
 			}
 			
-			Assert.assertEquals(events.size(),eventManager.getAllEventsWithSelectedSponsor(sponsor).size());			
+			Assert.assertEquals(events.size(),selected.size());
 			
 			
 		} finally {
