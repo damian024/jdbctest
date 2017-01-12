@@ -18,23 +18,23 @@ public class EventManager {
 
 		private String url = "jdbc:hsqldb:hsql://localhost/workdb";
 
-		private String createTableEvent = "CREATE TABLE Event(id INTEGER IDENTITY PRIMARY KEY, name varchar(20), about varchar(100), mainSponsor bigint);";
+		private String createTableEvent = "CREATE TABLE Event(id INTEGER IDENTITY PRIMARY KEY, name varchar(20), mainSponsor BIGINT, about varchar(100))";
 
 		private PreparedStatement addEventStmt;
 		private PreparedStatement editEventStmt;
 		private PreparedStatement deleteEventStmt;
 		private PreparedStatement selectEventByIdStmt;
-		private PreparedStatement getAllEventsStmt;
 		private PreparedStatement getEventsWithSponsorStmt;
 		private PreparedStatement deleteSponsorStmt;
-		private PreparedStatement addSponsorStmt;
+		private PreparedStatement addSponsorStmt; 
+		private PreparedStatement getAllEventsStmt;
 
 		private Statement statement;
 
 		public EventManager() {
 			try {
 				connection = DriverManager.getConnection(
-				          "jdbc:hsqldb:file:/tmp/testdb;ifexists=false", "SA", "");
+				          "jdbc:hsqldb:file:/tmp/testdb;ifexists=false;shutdown=true;readonly=true", "SA", "");
 						//DriverManager.getConnection(url);
 				statement = connection.createStatement();
 
@@ -51,20 +51,20 @@ public class EventManager {
 				if (!tableExists)
 					statement.executeUpdate(createTableEvent);
 
-				addEventStmt = connection
-						.prepareStatement("INSERT INTO Event(name,about,mainSponsor) VALUES (?, ?, ?)");
+				getAllEventsStmt = connection
+						.prepareStatement("SELECT * FROM Event");
 				deleteEventStmt = connection
 						.prepareStatement("DELETE FROM Event Where id = ?");
 				editEventStmt = connection
-						.prepareStatement("UPDATE Event Set name=?,about =?,mainSponsor=? WHERE id=?;");
-				getAllEventsStmt = connection
-						.prepareStatement("SELECT * FROM Event");
-				getEventsWithSponsorStmt = connection
-						.prepareStatement("SELECT * FROM Event Where mainSponsor= ?");
+						.prepareStatement("UPDATE event SET name = ?, about = ?,  mainsponsor = ? WHERE id = ?");
 				deleteSponsorStmt = connection
-						.prepareStatement("UPDATE Event Set mainSponsor=NULL WHERE id=?;");
+						.prepareStatement("UPDATE Event Set mainSponsor= NULL WHERE id= ?");
+				addEventStmt = connection
+						.prepareStatement("INSERT INTO Event (name, about, mainsponsor ) VALUES (?, ?, ?)");
 				addSponsorStmt = connection
-						.prepareStatement("UPDATE Event Set mainSponsor=? WHERE id=?;");
+						.prepareStatement("UPDATE Event SET mainsponsor= ?  WHERE id = ?");
+				getEventsWithSponsorStmt = connection
+						.prepareStatement("SELECT * FROM Event Where mainsponsor= ?");
 				selectEventByIdStmt = connection
 						.prepareStatement("SELECT * FROM Event WHERE id = ?");
 
@@ -111,7 +111,7 @@ public class EventManager {
 				e.printStackTrace();
 			}
 			return count;
-		}
+		} 
 	    public int AddSponsor(Event event, Sponsor sponsor)
 	    {
 	    	int count = 0;
@@ -205,5 +205,5 @@ public class EventManager {
 				e.printStackTrace();
 			}
 			return events;
-		}
+		} 
 }
